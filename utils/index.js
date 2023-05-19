@@ -2,9 +2,11 @@
 
 const _ = require("lodash");
 const Boom = require("boom");
+const { API_VERSION } = require("./config");
+
 const fns = {};
 
-fns.prefix = "v0";
+fns.prefix = API_VERSION;
 
 fns.replyWith = {
   forbidden: (h) => Boom.forbidden(),

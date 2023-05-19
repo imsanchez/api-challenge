@@ -2,19 +2,16 @@
 
 const _ = require("lodash");
 const { expect } = require("chai");
-const { server } = require("./config/test.server.js");
-const sequelize = require("../config/sequelize/setup.js");
-const Test = require("./config/test.utils.js");
+const {
+  assignRoleForUser,
+  sequelize,
+  server,
+} = require("../utils/test-utils.js");
 
 const uri = `${server.info.uri}/v0`;
 const scope = {};
 
 describe("User CRUD operations -", () => {
-  before(async () => {
-    await Test.setupDb();
-    return Promise.resolve();
-  });
-
   describe("GET /users/{userId}", () => {
     it("should read a given user's information if requester is an admin", async () => {});
     it("should return 401 unauthorized if requester is not an admin", async () => {});
@@ -29,11 +26,11 @@ describe("User CRUD operations -", () => {
       scope.accessToken = await scope.user.generateAccessToken();
 
       // Add 2 roles to the user
-      await Test.assignRoleForUser({
+      await assignRoleForUser({
         user: scope.user,
         roleName: "owner",
       });
-      await Test.assignRoleForUser({
+      await assignRoleForUser({
         user: scope.user,
         roleName: "member",
       });

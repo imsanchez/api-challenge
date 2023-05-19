@@ -2,19 +2,16 @@
 
 const _ = require("lodash");
 const { expect } = require("chai");
-const { server } = require("./config/test.server.js");
-const sequelize = require("../config/sequelize/setup.js");
-const Test = require("./config/test.utils.js");
+const {
+  assignRoleForUser,
+  sequelize,
+  server,
+} = require("../utils/test-utils.js");
 
 const uri = `${server.info.uri}/v0`;
 const scope = {};
 
 describe("Role CRUD operations -", () => {
-  before(async () => {
-    await Test.setupDb();
-    return Promise.resolve();
-  });
-
   describe("GET /roles", () => {
     it("should list all application roles if requester is an admin", async () => {
       // Create a user and a JWT access token for that user
@@ -24,7 +21,7 @@ describe("Role CRUD operations -", () => {
       scope.adminAccessToken = await scope.adminUser.generateAccessToken();
 
       // Add the admin role for the user
-      await Test.assignRoleForUser({
+      await assignRoleForUser({
         user: scope.adminUser,
         roleName: "admin",
       });

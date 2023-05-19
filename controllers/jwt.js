@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../../models/user.js");
+const User = require("../models/user.js");
 
 /**
  * Check that a decoded JWT has values matching its user's token.

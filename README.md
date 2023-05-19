@@ -57,14 +57,14 @@ The API currently has 2 routes:
 Returns information about the user making the request. See more about this route in the following files:
 
 - `/test/user.crud.spec.js`
-- `/config/routes/user.routes.js`
+- `/routes/user.js`
 
 ### `GET /roles`
 
 Returns a list of roles, provided that the requester is an admin. See more about this route in the following files:
 
 - `/test/role.crud.spec.js`
-- `/config/routes/role.routes.js`
+- `/routes/role.js`
 
 ### Database setup
 
@@ -88,7 +88,7 @@ Authentication is done with a [JSON Web Token](https://userfront.com/guide/auth/
 }
 ```
 
-The server reads this token and verifies it using the `RSA_PUBLIC_KEY` found in `/config/env/test.env`.
+The server reads this token and verifies it using the `RSA_PUBLIC_KEY` found in your environment variables.
 
 For testing, you can generate a valid token using the `user.generateAccessToken()` method. (See `/test/role.crud.spec.js` for an example)
 
