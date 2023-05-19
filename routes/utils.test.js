@@ -1,15 +1,13 @@
 const _ = require("lodash");
-const sequelize = require("../../config/sequelize/setup.js");
+const sequelize = require("../lib/sequelize.js");
+const { NODE_ENV } = require("../config/env.js");
 
 const Test = {
   sequelize,
   basics: {},
 };
 
-if (
-  process.env.NODE_ENV === "test" &&
-  sequelize.config.database === "api_challenge"
-) {
+if (NODE_ENV === "test" && sequelize.config.database === "api_challenge") {
   Test.resetTable = (modelName) => {
     if (modelName === "Utils") return;
     if (!modelName) throw new Error("modelName undefined");

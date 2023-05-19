@@ -1,8 +1,8 @@
-const { server } = require("../../server.js");
+const { stop } = require("./index.js");
 
 after(async () => {
   return new Promise((resolve, reject) => {
-    server.stopRun(() => {
+    stop(() => {
       resolve();
     });
   });

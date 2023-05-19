@@ -2,9 +2,9 @@
 
 const _ = require("lodash");
 const { expect } = require("chai");
-const { server } = require("./config/test.server.js");
+const { server } = require("../../utils/test-utils.js");
 const sequelize = require("../config/sequelize/setup.js");
-const Test = require("./config/test.utils.js");
+const Test = require("./utils.test.js");
 
 const uri = `${server.info.uri}/v0`;
 const scope = {};

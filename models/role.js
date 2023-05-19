@@ -2,7 +2,7 @@
 
 const _ = require("lodash");
 const Sequelize = require("sequelize");
-const sequelize = require("../config/sequelize/setup.js");
+const sequelize = require("../lib/sequelize.js");
 
 const Role = sequelize.define("Role", {
   name: {

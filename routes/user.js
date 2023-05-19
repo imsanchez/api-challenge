@@ -1,20 +1,20 @@
 const _ = require("lodash");
-const routeUtils = require("./utils.route.js");
-const Role = require("../../models/role.js");
+const routeUtils = require("./utils.js");
+const User = require("../models/user.js");
 
 module.exports = [
-  // Read all roles
+  // Read self
   {
     method: "GET",
-    path: "/roles",
+    path: "/users/self",
     config: {
-      description: "Read all roles",
-      tags: ["Roles"],
+      description: "Read a user",
+      tags: ["Users"],
     },
     handler: async (request, h) => {
       try {
         const { user } = request.auth.credentials;
-        const res = await Role.findAllWithPermission({ user });
+        const res = await user.findComplete();
         return routeUtils.replyWith.found(res, h);
       } catch (err) {
         return routeUtils.handleErr(err, h);
