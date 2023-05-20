@@ -2,16 +2,19 @@
 
 const _ = require("lodash");
 const { expect } = require("chai");
-const { server } = require("./config/test.server.js");
-const sequelize = require("../config/sequelize/setup.js");
-const Test = require("./config/test.utils.js");
+const {
+  assignRoleForUser,
+  sequelize,
+  server,
+  setupDb,
+} = require("../utils/test-utils.js");
 
 const uri = `${server.info.uri}/v0`;
 const scope = {};
 
 describe("Role CRUD operations -", () => {
   before(async () => {
-    await Test.setupDb();
+    await setupDb();
     return Promise.resolve();
   });
 
@@ -24,7 +27,7 @@ describe("Role CRUD operations -", () => {
       scope.adminAccessToken = await scope.adminUser.generateAccessToken();
 
       // Add the admin role for the user
-      await Test.assignRoleForUser({
+      await assignRoleForUser({
         user: scope.adminUser,
         roleName: "admin",
       });

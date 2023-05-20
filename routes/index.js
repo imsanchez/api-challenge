@@ -6,13 +6,13 @@
   PUT    /model/:id   models#update	  update the one and only model resource
   DELETE /model/:id   models#delete   delete the model resource
 */
-const userRoutes = require("./user.routes.js");
-const roleRoutes = require("./role.routes.js");
+const userRoutes = require("./user.js");
+const roleRoutes = require("./role.js");
 
 const statusRoute = {
   method: "GET",
   path: "/status",
-  handler: (request, h) => "OK",
+  handler: () => "OK",
   config: {
     auth: false,
   },
@@ -22,12 +22,14 @@ const routes = [].concat(userRoutes, roleRoutes, statusRoute);
 
 module.exports = {
   routes,
-  plugin: {
+  plugins: {
     v0: {
       name: "apiV0",
       version: "0.1.0",
-      register: (server, options) => {
-        server.route(routes);
+      register: async function (server) {
+        routes.forEach((route) => {
+          server.route(route);
+        });
       },
       routes: {
         prefix: "/v0",

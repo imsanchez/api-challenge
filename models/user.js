@@ -2,9 +2,10 @@
 
 const _ = require("lodash");
 const Sequelize = require("sequelize");
-const sequelize = require("../config/sequelize/setup.js");
+const sequelize = require("../lib/sequelize.js");
 const jwt = require("jsonwebtoken");
 const Joi = require("@hapi/joi");
+const { RSA_PRIVATE_KEY } = require("../utils/config.js");
 
 const User = sequelize.define("User", {
   uuid: {
@@ -91,7 +92,7 @@ User.prototype.generateAccessToken = async function () {
   const accessToken = jwt.sign(
     accessPayload,
     {
-      key: process.env.RSA_PRIVATE_KEY,
+      key: RSA_PRIVATE_KEY,
     },
     {
       expiresIn: 2592000, // 30 days
