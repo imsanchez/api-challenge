@@ -64,19 +64,11 @@ const assignRoleForUser = async ({ user, roleName }) => {
  *
  * @returns {string} JWT access token
  */
-const userWithToken = async ({ role, roles } = {}) => {
+const userWithToken = async ({ roles } = {}) => {
   // Create an example user
   const user = await sequelize.models.User.create({
     email: `user@example.com`,
   });
-
-  if (typeof role === "string") {
-    // Add the specified role for the user
-    await assignRoleForUser({
-      user,
-      roleName: role,
-    });
-  }
 
   if (roles instanceof Array) {
     // Add each role for the user

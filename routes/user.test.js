@@ -14,7 +14,7 @@ describe("User CRUD operations -", () => {
     it("should read a given user's information if requester is an admin", async () => {
       // Create an admin user and a JWT access token
       const { accessToken } = await userWithToken({
-        role: "admin",
+        roles: ["admin"],
       });
 
       const user = await sequelize.models.User.findByPk(1);
