@@ -37,8 +37,12 @@ describe("Role CRUD operations -", () => {
 
       // Check the response
       expect(statusCode).to.equal(200);
-      expect(result.length).to.equal(sequelize.models.Role.defaultRoles.length);
-      expect(result).to.have.members(sequelize.models.Role.defaultRoles);
+      expect(result.results.length).to.equal(
+        sequelize.models.Role.defaultRoles.length
+      );
+      expect(result.results).to.have.members(
+        sequelize.models.Role.defaultRoles
+      );
 
       return Promise.resolve();
     });
@@ -51,7 +55,7 @@ describe("Role CRUD operations -", () => {
       scope.accessToken = await scope.user.generateAccessToken();
 
       // Make the request
-      const { statusCode, result } = await server.inject({
+      const serverInjection = await server.inject({
         method: "get",
         url: `${API_URI}/roles`,
         headers: {
@@ -60,9 +64,7 @@ describe("Role CRUD operations -", () => {
       });
 
       // Check the response
-      expect(statusCode).to.equal(401);
-      expect(result.message).to.exist;
-      expect(result.message).to.deep.equal("Unauthorized");
+      expect(serverInjection).to.be.unauthorized;
 
       return Promise.resolve();
     });

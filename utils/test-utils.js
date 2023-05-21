@@ -6,24 +6,38 @@ const { server } = require("../lib/hapi.js");
 const sequelize = require("../lib/sequelize.js");
 const { API_VERSION } = require("./config.js");
 
+/**
+ * Chai plugin to match objects and arrays deep equality with arrays (including nested ones) being in any order.
+ *
+ * @link https://github.com/oprogramador/deep-equal-in-any-order#readme
+ */
 chai.use(deepEqualInAnyOrder);
 
-const { expect } = chai;
-
+/**
+ * Custom Chai assertion property to check for unauthorized response
+ *
+ * @example expect(Server.inject).to.be.unauthorized;
+ * @example expect(Server.inject).to.not.be.unauthorized;
+ */
 chai.Assertion.addProperty("unauthorized", function () {
+  // Check for the unauthorized (401) status code
+  const statusCode = this._obj.statusCode;
   this.assert(
-    this._obj.statusCode === 401,
-    "expected #{this} to be unauthorized",
-    "expected #{this} to not be unauthorized",
+    statusCode === 401,
+    `expected ${statusCode} to be 401`,
+    `expected ${statusCode} not to be 401`,
     "unauthorized",
-    this._obj.statusCode
+    statusCode
   );
+
+  // Check for the unauthorized message
+  const message = this._obj.result.message;
   this.assert(
-    this._obj.result.message === "Unauthorized",
-    "expected #{this} to be unauthorized",
-    "expected #{this} to not be unauthorized",
+    message === "Unauthorized",
+    `expected "${message}" to be "Unauthorized"`,
+    `expected "${message}" not to be "Unauthorized"`,
     "unauthorized",
-    this._obj.result.message
+    message
   );
 });
 
@@ -93,6 +107,8 @@ const userWithToken = async ({ roles } = {}) => {
 };
 
 const API_URI = `${server.info.uri}/${API_VERSION}`;
+
+const { expect } = chai;
 
 module.exports = {
   assignRoleForUser,

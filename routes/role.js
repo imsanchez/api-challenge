@@ -18,7 +18,9 @@ module.exports = [
         await requireRole(request.auth.credentials.user);
 
         const roles = await Role.findAll();
-        const res = _.map(roles, "name");
+        const res = {
+          results: _.map(roles, "name"),
+        };
 
         return routeUtils.replyWith.found(res, h);
       } catch (err) {
