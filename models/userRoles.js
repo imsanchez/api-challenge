@@ -4,18 +4,20 @@ const _ = require("lodash");
 const Sequelize = require("sequelize");
 const sequelize = require("../lib/sequelize.js");
 
-const UserRole = sequelize.define("UserRole", {
-  roleId: {
-    allowNull: false,
+const UserRoles = sequelize.define("UserRoles", {
+  RoleId: {
     type: Sequelize.INTEGER,
-    field: "role_id",
-    unique: "UserRoles_role_id_user_id",
+    references: {
+      model: "Roles",
+      key: "id",
+    },
   },
-  userId: {
-    allowNull: false,
+  UserId: {
     type: Sequelize.INTEGER,
-    field: "user_id",
-    unique: "UserRoles_role_id_user_id",
+    references: {
+      model: "Users",
+      key: "id",
+    },
   },
   createdAt: {
     type: Sequelize.DATE,
@@ -27,4 +29,4 @@ const UserRole = sequelize.define("UserRole", {
   },
 });
 
-module.exports = UserRole;
+module.exports = UserRoles;

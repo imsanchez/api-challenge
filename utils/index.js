@@ -17,12 +17,28 @@ fns.replyWith = {
 };
 
 fns.handleErr = (err = {}, h) => {
-  if (typeof err !== "object") err = { message: err };
-  if (err.message === "Not Found") return Boom.notFound();
-  if (err.message === "Unauthorized") return Boom.unauthorized();
-  if (err.message === "Forbidden") return fns.replyWith.forbidden(h);
-  if (err.message === "Usage Limit Exceeded")
+  if (typeof err === "string") {
+    err = { message: err };
+  }
+  if (typeof err === "number") {
+    err = { code: err };
+  }
+
+  if (err.code === 400 || err.message === "Bad Request") {
+    return Boom.badRequest();
+  }
+  if (err.code === 404 || err.message === "Not Found") {
+    return Boom.notFound();
+  }
+  if (err.code === 401 || err.message === "Unauthorized") {
+    return Boom.unauthorized();
+  }
+  if (err.code === 403 || err.message === "Forbidden") {
+    return fns.replyWith.forbidden(h);
+  }
+  if (err.code === 429 || err.message === "Usage Limit Exceeded") {
     return Boom.tooManyRequests("Usage Limit Exceeded");
+  }
 
   const firstError = err.errors && err.errors[0];
 

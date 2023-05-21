@@ -1,14 +1,14 @@
 "use strict";
 
 const _ = require("lodash");
-const { expect } = require("chai");
 const {
+  API_URI,
   assignRoleForUser,
+  expect,
   sequelize,
   server,
 } = require("../utils/test-utils.js");
 
-const uri = `${server.info.uri}/v0`;
 const scope = {};
 
 describe("Role CRUD operations -", () => {
@@ -29,7 +29,7 @@ describe("Role CRUD operations -", () => {
       // Make the request
       const { statusCode, result } = await server.inject({
         method: "get",
-        url: `${uri}/roles`,
+        url: `${API_URI}/roles`,
         headers: {
           authorization: `Bearer ${scope.adminAccessToken}`,
         },
@@ -37,13 +37,8 @@ describe("Role CRUD operations -", () => {
 
       // Check the response
       expect(statusCode).to.equal(200);
-      expect(result.results).to.exist;
-      expect(result.results.length).to.equal(
-        sequelize.models.Role.defaultRoles.length
-      );
-      expect(result.results).to.have.members(
-        sequelize.models.Role.defaultRoles
-      );
+      expect(result.length).to.equal(sequelize.models.Role.defaultRoles.length);
+      expect(result).to.have.members(sequelize.models.Role.defaultRoles);
 
       return Promise.resolve();
     });
@@ -58,7 +53,7 @@ describe("Role CRUD operations -", () => {
       // Make the request
       const { statusCode, result } = await server.inject({
         method: "get",
-        url: `${uri}/roles`,
+        url: `${API_URI}/roles`,
         headers: {
           authorization: `Bearer ${scope.accessToken}`,
         },

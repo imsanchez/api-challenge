@@ -21,6 +21,12 @@ const statusRoute = {
 
 const routes = [].concat(userRoutes, roleRoutes, statusRoute);
 
+/**
+ * @todo Add some sort of shield to protect routes according to roles, default all routes to unauthorized
+ * Use dictionaries of routes and roles e.g. { "/users/{userId}": ["admin"]}
+ * this will reduce repetion of requireRole() in each protected route and consolidate this configuration and logic
+ */
+
 const plugins = {
   v0: {
     name: "apiV0",

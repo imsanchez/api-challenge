@@ -74,7 +74,7 @@ The database has 3 tables. These are automatically created when the test suite r
 | --------- | --------------------------------------- | --------------------- |
 | Users     | Basic information about users           | `/models/user.js`     |
 | Roles     | List of role names                      | `/models/role.js`     |
-| UserRoles | Join table for assigning roles to users | `/models/userRole.js` |
+| UserRoles | Join table for assigning roles to users | `/models/userRoles.js` |
 
 ### Authentication
 

@@ -13,12 +13,14 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --file mocha.setup.js",
     "test:watch": "cross-env NODE_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --watch --file mocha.setup.js",
-    "start": "tsx index.js"
+    "start": "tsx index.js",
+    "dev": "tsx watch index.js"
   },
   "dependencies": {
     "@hapi/hapi": "20.2.1",
     "@hapi/joi": "17.1.1",
     "boom": "7.3.0",
+    "deep-equal-in-any-order": "^2.0.6",
     "dotenv": "16.0.3",
     "hapi-auth-jwt2": "10.2.0",
     "jsonwebtoken": "8.5.1",

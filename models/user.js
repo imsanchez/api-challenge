@@ -57,21 +57,25 @@ User.prototype.toJSON = function () {
 };
 
 /**
- * Find a user along with its roles
- *
- * @returns {Object}
+ * Get and map a user's roles
  */
-User.prototype.findComplete = async function () {
+User.prototype.roles = async function () {
+  const user = this;
+  const roles = await user.getRoles();
+  return _.map(roles, "name");
+};
+
+/**
+ * Get a user's complete data including relationships
+ */
+User.prototype.getComplete = async function () {
   const user = this;
   const userObj = user.get();
-  const rolesResult = await sequelize.query(
-    `SELECT r.name FROM "Roles" r JOIN "UserRoles" ur ON r.id = ur.role_id WHERE ur.user_id = :userId`,
-    { replacements: { userId: user.id } }
-  );
+  const roles = await user.roles();
 
   return {
     ...userObj,
-    roles: _.map(rolesResult[0], "name"),
+    roles,
   };
 };
 
