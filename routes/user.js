@@ -13,7 +13,7 @@ module.exports = [
     },
     handler: async (request, h) => {
       try {
-        const { userId } = request.params;
+        const userId = request.params.userId;
 
         if (!userId) {
           // Bad request (400) if no userId is provided
@@ -23,8 +23,9 @@ module.exports = [
         // Require authenticated user to be an admin
         await requireRole(request.auth.credentials.user);
 
+        // Get the user by id from request parameters
         const res = await getCompleteById(userId);
-
+        // Return the complete user object
         return routeUtils.replyWith.found(res, h);
       } catch (err) {
         return routeUtils.handleErr(err, h);

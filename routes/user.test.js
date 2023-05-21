@@ -32,8 +32,6 @@ describe("User CRUD operations -", () => {
       // Check the response
       expect(statusCode).to.equal(200);
       expect(result).to.deep.equalInAnyOrder(userResult);
-
-      return Promise.resolve();
     });
     it("should return 401 unauthorized if requester is not an admin", async () => {
       // Create a user and a JWT access token for that user
@@ -50,8 +48,6 @@ describe("User CRUD operations -", () => {
 
       // Check the response
       expect(serverInjection).to.be.unauthorized;
-
-      return Promise.resolve();
     });
   });
 
@@ -79,8 +75,6 @@ describe("User CRUD operations -", () => {
       expect(result.email).to.equal(completeUser.email);
       expect(result.roles.length).to.equal(2);
       expect(result.roles).to.have.members(["owner", "member"]);
-
-      return Promise.resolve();
     });
   });
 });

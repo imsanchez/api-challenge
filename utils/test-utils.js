@@ -16,8 +16,8 @@ chai.use(deepEqualInAnyOrder);
 /**
  * Custom Chai assertion property to check for unauthorized response
  *
- * @example expect(Server.inject).to.be.unauthorized;
- * @example expect(Server.inject).to.not.be.unauthorized;
+ * @example expect(server.inject).to.be.unauthorized;
+ * @example expect(server.inject).to.not.be.unauthorized;
  */
 chai.Assertion.addProperty("unauthorized", function () {
   // Check for the unauthorized (401) status code
@@ -41,19 +41,34 @@ chai.Assertion.addProperty("unauthorized", function () {
   );
 });
 
+const { expect } = chai;
+
+// API Uri used for test mock requests
+const API_URI = `${server.info.uri}/${API_VERSION}`;
+
+/**
+ * Reset a table in the database
+ * @param {string} modelName - Name of the model to reset
+ * @returns {Promise} Promise that resolves when the table is reset
+ */
 const resetTable = (modelName) => {
-  if (modelName === "Utils") return;
   if (!modelName) throw new Error("modelName undefined");
   return sequelize.models[modelName].sync({ force: true, logging: false });
 };
 
+/**
+ * Reset all tables in the database
+ */
 const resetDb = async () => {
   await resetTable("User");
   await resetTable("Role");
   await resetTable("UserRoles");
-  return Promise.resolve();
+  return;
 };
 
+/**
+ * Reset database and seed with default roles
+ */
 const setupDb = async () => {
   try {
     await resetDb();
@@ -65,8 +80,11 @@ const setupDb = async () => {
 
 /**
  * Assign a role to a given user
+ * @param {object} user - User instance to assign the role to
+ * @param {string} roleName - Name of the role to assign
+ * @returns {Promise} Promise that resolves when the role is assigned
  */
-const assignRoleForUser = async ({ user, roleName }) => {
+const addRoleToUser = async (user, roleName) => {
   const role = await sequelize.models.Role.findOne({
     where: { name: roleName },
   });
@@ -74,27 +92,22 @@ const assignRoleForUser = async ({ user, roleName }) => {
 };
 
 /**
- * Create an example admin user for testing
+ * Create an example user with specified roles
  *
- * @returns {string} JWT access token
+ * @param {object} options - Options for the example user
+ * @param {string[]} options.roles - Array of role names to assign to the user
+ * @returns {object} Object containing the example user and a JWT access token
  */
 const userWithToken = async ({ roles } = {}) => {
-  // Create an example user
+  // Create a new example user with a random email address
+  const prefix = Math.random().toString(36).substring(2, 15);
   const user = await sequelize.models.User.create({
-    email: `user@example.com`,
+    email: `${prefix}@userfront.com`,
   });
 
   if (roles instanceof Array) {
-    // Add each role for the user
-    await Promise.all(
-      roles.map(
-        async (roleName) =>
-          await assignRoleForUser({
-            user,
-            roleName,
-          })
-      )
-    );
+    // Assign each role to the user
+    await Promise.all(roles.map((roleName) => addRoleToUser(user, roleName)));
   }
 
   // Generate JWT access token for the example user
@@ -106,15 +119,9 @@ const userWithToken = async ({ roles } = {}) => {
   };
 };
 
-const API_URI = `${server.info.uri}/${API_VERSION}`;
-
-const { expect } = chai;
-
 module.exports = {
-  assignRoleForUser,
+  addRoleToUser,
   expect,
-  resetDb,
-  resetTable,
   sequelize,
   server,
   setupDb,

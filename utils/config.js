@@ -1,10 +1,13 @@
 const path = require("path");
 
+// NODE_ENV should only be set to "production" or "development"
 const NODE_ENV = process.env.NODE_ENV || "development";
+// SERVER_ENV can be set to any environment name such as "test"
+const SERVER_ENV = process.env.SERVER_ENV || NODE_ENV || "development";
 
 require("dotenv").config({
   // Specify dotenv by environment
-  path: path.join(__dirname, `../.env.${NODE_ENV}`),
+  path: path.join(__dirname, `../.env.${SERVER_ENV}`),
 });
 
 // API Server Configurations
@@ -21,8 +24,9 @@ const DATABASE_HOST = process.env.DATABASE_HOST || "localhost";
 const DATABASE_PORT = process.env.DATABASE_PORT || 5432;
 
 // Debugging
-const DEBUG = process.env.DEBUG || NODE_ENV === "development";
-const SILENT_OPS = process.env.SILENT_OPS || false;
+const isDevelopment = SERVER_ENV !== "test" && SERVER_ENV !== "production"; // Disable debugging in test and production
+const DEBUG = process.env.DEBUG || isDevelopment; // Set DEBUG=true to see logs
+const SILENT_OPS = process.env.SILENT_OPS || !isDevelopment; // Set SILENT_OPS=true to silence console.info
 
 // SSL
 const RSA_PUBLIC_KEY =
@@ -46,5 +50,6 @@ module.exports = {
   PORT,
   RSA_PRIVATE_KEY,
   RSA_PUBLIC_KEY,
+  SERVER_ENV,
   SILENT_OPS,
 };

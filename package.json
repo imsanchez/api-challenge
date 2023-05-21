@@ -11,8 +11,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --file mocha.setup.js",
-    "test:watch": "cross-env NODE_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --watch --file mocha.setup.js",
+    "test": "cross-env SERVER_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --file mocha.setup.js",
+    "test:watch": "cross-env SERVER_ENV=test mocha './{,!(node_modules)/**}/*.test.js' --watch --file mocha.setup.js",
     "start": "tsx index.js",
     "dev": "tsx watch index.js"
   },

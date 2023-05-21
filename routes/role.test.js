@@ -3,7 +3,7 @@
 const _ = require("lodash");
 const {
   API_URI,
-  assignRoleForUser,
+  addRoleToUser,
   expect,
   sequelize,
   server,
@@ -21,10 +21,7 @@ describe("Role CRUD operations -", () => {
       scope.adminAccessToken = await scope.adminUser.generateAccessToken();
 
       // Add the admin role for the user
-      await assignRoleForUser({
-        user: scope.adminUser,
-        roleName: "admin",
-      });
+      await addRoleToUser(scope.adminUser, "admin");
 
       // Make the request
       const { statusCode, result } = await server.inject({
@@ -43,8 +40,6 @@ describe("Role CRUD operations -", () => {
       expect(result.results).to.have.members(
         sequelize.models.Role.defaultRoles
       );
-
-      return Promise.resolve();
     });
 
     it("should return 401 unauthorized if not an admin", async () => {
@@ -65,8 +60,6 @@ describe("Role CRUD operations -", () => {
 
       // Check the response
       expect(serverInjection).to.be.unauthorized;
-
-      return Promise.resolve();
     });
   });
 });
