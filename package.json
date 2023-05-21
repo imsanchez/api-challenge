@@ -20,7 +20,6 @@
     "@hapi/hapi": "20.2.1",
     "@hapi/joi": "17.1.1",
     "boom": "7.3.0",
-    "deep-equal-in-any-order": "^2.0.6",
     "dotenv": "16.0.3",
     "hapi-auth-jwt2": "10.2.0",
     "jsonwebtoken": "8.5.1",
@@ -31,6 +30,7 @@
   "devDependencies": {
     "chai": "4.3.4",
     "cross-env": "latest",
+    "deep-equal-in-any-order": "^2.0.6",
     "mocha": "^10.2.0",
     "sequelize-cli": "6.3.0",
     "tsx": "3.12.7"
